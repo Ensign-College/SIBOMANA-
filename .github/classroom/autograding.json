@@ -1,0 +1,24 @@
+{
+  "tests": [
+    {
+      "name": "This criterion is linked to a Learning Outcome: delRecord function works as expected",
+      "setup": "pip install -r requirements.txt",
+      "run": "pytest tests/test_db_module.py",
+      "input": "",
+      "output": "",
+      "comparison": "exact",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Test record update functionality",
+      "setup": "pip install -r requirements.txt",
+      "run": "pytest tests/test_db_module.py",
+      "input": "",
+      "output": "",
+      "comparison": "exact",
+      "timeout": 10,
+      "points": 10
+    }
+  ]
+}

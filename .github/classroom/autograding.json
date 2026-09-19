@@ -1,0 +1,34 @@
+{
+  "tests": [
+    {
+      "name": "This criterion is linked to a Learning OutcomedelRecord function works as expected",
+      "setup": "pip install -r requirements.txt",
+      "run": "pytest test_db_module.py::test_delRecord",
+      "input": "",
+      "output": "",
+      "comparison": "exact",
+      "timeout": 10,
+      "points": 8
+    },
+    {
+      "name": "Test record update functionality",
+      "setup": "pip install -r requirements.txt",
+      "run": "pytest test_db_module.py::test_updateRec",
+      "input": "",
+      "output": "",
+      "comparison": "exact",
+      "timeout": 10,
+      "points": 8
+    },
+    {
+      "name": "Submitted Code to GitHub",
+      "setup": "pip install -r requirements.txt",
+      "run": "echo 'Submitted to GitHub'",
+      "input": "",
+      "output": "",
+      "comparison": "exact",
+      "timeout": 10,
+      "points": 4
+    }
+  ]
+}

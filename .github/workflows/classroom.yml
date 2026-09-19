@@ -1,0 +1,55 @@
+name: GitHub Classroom Workflow
+run-name: "Autograding ${{ inputs.grading_run_id || github.sha }}"
+
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      grading_run_id:
+        description: ExpertFlow GradingRun id
+        required: false
+      sha:
+        description: Commit SHA to grade
+        required: false
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  build:
+    name: Autograding
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.sha || github.sha }}
+      - name: Overlay canonical tests from template
+        uses: actions/checkout@v4
+        with:
+          repository: Ensign-College/cs104-6-3-career-connections-using-a-database-v2-0-cs104-6-3-career-connections-using-a-database-act
+          path: __template__
+          # Template repos are internal; the default GITHUB_TOKEN cannot read them across repos.
+          token: ${{ secrets.GRADING_TEMPLATES_TOKEN || github.token }}
+      - name: Apply overlay
+        run: |
+          rm -f conftest.py pyproject.toml setup.cfg tox.ini pytest.ini
+          rm -rf tests .github/classroom
+          cp -R __template__/tests tests
+          cp -R __template__/.github/classroom .github/classroom
+          if [ -f __template__/pytest.ini ]; then cp __template__/pytest.ini pytest.ini; fi
+          if [ -f __template__/requirements.txt ]; then cp __template__/requirements.txt requirements.txt; fi
+          rm -rf __template__
+      - uses: Ensign-College/autograding@v1
+        with:
+          grading-run-id: ${{ inputs.grading_run_id }}
+          sha: ${{ inputs.sha || github.sha }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: autograding-results
+          path: autograding-results.json
